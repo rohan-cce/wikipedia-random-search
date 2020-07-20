@@ -7,7 +7,6 @@ import time
 word=pf.figlet_format("wikipedia random search")
 print(word)
 def wiki_random_search():
-
     page=''
     while page=='':
         try:
@@ -16,9 +15,7 @@ def wiki_random_search():
         except:
             time.sleep(5)
             continue
-
-
-        
+    
     if response is not None:
         html = bs4.BeautifulSoup(response.text, 'html.parser')
 
@@ -42,9 +39,9 @@ def wiki_random_search():
 
             intro = '\n'.join([ para.text for para in paragraphs[0:5]])
             print (intro)
-
-
+            
             print("-----------------------------------------------------")
+            
             time.sleep(5)
             print("if want to continue reading articles press -y-")
             ch=input()
@@ -54,10 +51,8 @@ def wiki_random_search():
                 print("""Thank You for using wikipedia random search
                                     Exiting please wait             """)
                 time.sleep(3)
-                sys.exit(0)
-                
+                sys.exit(0)                
         else:
-
             print("generating other article please wait\n")
             wiki_random_search()
 
