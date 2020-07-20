@@ -1,16 +1,24 @@
-import webbrowser as wb
 import bs4
 import requests
 import pyfiglet as pf
+import sys
+import time
 
 word=pf.figlet_format("wikipedia random search")
-
 print(word)
-
 def wiki_random_search():
-    
-    response = requests.get("https://en.wikipedia.org/wiki/Special:Random")
 
+    page=''
+    while page=='':
+        try:
+            response = requests.get("https://en.wikipedia.org/wiki/Special:Random")
+            break
+        except:
+            time.sleep(5)
+            continue
+
+
+        
     if response is not None:
         html = bs4.BeautifulSoup(response.text, 'html.parser')
 
@@ -26,16 +34,31 @@ def wiki_random_search():
 
         if c[:1]=='y' or c[:1]=='Y':
 
-            print("Opening browser and searching for %s in wikipedia"%title)
+            print("searching for %s in wikipedia"%title)
+            print("------------------------------------")
+            paragraphs = html.select("p")
+            for para in paragraphs:
+                print (para.text)
 
-            s="https://en.wikipedia.org/wiki/"+title
+            intro = '\n'.join([ para.text for para in paragraphs[0:5]])
+            print (intro)
 
-            wb.open(s)
 
+            print("-----------------------------------------------------")
+            time.sleep(5)
+            print("if want to continue reading articles press -y-")
+            ch=input()
+            if ch[:1]=='y' or ch[:1]=='Y':
+                wiki_random_search()
+            else:
+                print("""Thank You for using wikipedia random search
+                                    Exiting please wait             """)
+                time.sleep(3)
+                sys.exit(0)
+                
         else:
 
             print("generating other article please wait\n")
-
             wiki_random_search()
 
 wiki_random_search()
